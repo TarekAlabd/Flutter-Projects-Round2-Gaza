@@ -140,6 +140,7 @@ class _MyAppState extends State<MyApp> {
                                   questionsWithAnswers.length - 1) {
                                 setState(() {
                                   questionIndex++;
+                                  selectedAnswer = null;
                                 });
                               } else {
                                 setState(() {
