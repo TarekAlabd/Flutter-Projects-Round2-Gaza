@@ -14,9 +14,10 @@ class _QuestionPageState extends State<QuestionPage> {
   bool showScore = false;
   int score = 0;
   String? selectedAnswer;
- 
+
   @override
   Widget build(BuildContext context) {
+    const double pi = 3.14;
     return Scaffold(
       body: SafeArea(
         child: Padding(

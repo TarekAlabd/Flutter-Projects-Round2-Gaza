@@ -3,14 +3,14 @@ class QuestionModel {
   final List<String> answers;
   final String correctAnswer;
 
-  QuestionModel({
+  const QuestionModel({
     required this.question,
     required this.answers,
     required this.correctAnswer,
   });
 }
 
-List<QuestionModel> questionsWithAnswers = [
+List<QuestionModel> questionsWithAnswers = const [
     QuestionModel(
       question: 'What\'s your favorite color?',
       answers: ['Red', 'Blue', 'Green', 'Black'],
