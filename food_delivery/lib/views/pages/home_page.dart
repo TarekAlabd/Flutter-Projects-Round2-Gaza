@@ -1,11 +1,26 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:food_delivery/models/category_model.dart';
 import 'package:food_delivery/models/product_model.dart';
 import 'package:food_delivery/utils/app_colors.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  String? selectedCategoryId;
+  late List<ProductModel> filteredProducts;
+
+  @override
+  void initState() {
+    super.initState();
+    filteredProducts = dummyProducts;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,30 +46,48 @@ class HomePage extends StatelessWidget {
 
                   return Padding(
                     padding: const EdgeInsets.only(right: 12.0),
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        color: AppColors.white,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              category.imgUrl,
-                              height: 50,
-                              width: 50,
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              category.name,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w400,
-                                color: AppColors.black,
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          selectedCategoryId = category.id;
+                          filteredProducts = dummyProducts
+                              .where((product) =>
+                                  product.category.id == selectedCategoryId)
+                              .toList();
+                        });
+                      },
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: selectedCategoryId == category.id
+                              ? AppColors.primary
+                              : AppColors.white,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                category.imgUrl,
+                                height: 50,
+                                width: 50,
+                                color: selectedCategoryId == category.id
+                                    ? AppColors.white
+                                    : null,
                               ),
-                            ),
-                          ],
+                              const SizedBox(height: 8),
+                              Text(
+                                category.name,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  color: selectedCategoryId == category.id
+                                      ? AppColors.white
+                                      : AppColors.black,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -64,7 +97,7 @@ class HomePage extends StatelessWidget {
             ),
             const SizedBox(height: 36),
             GridView.builder(
-              itemCount: dummyProducts.length,
+              itemCount: filteredProducts.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 mainAxisSpacing: 24,
@@ -73,40 +106,66 @@ class HomePage extends StatelessWidget {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (_, index) {
-                final product = dummyProducts[index];
+                final product = filteredProducts[index];
 
                 return DecoratedBox(
                   decoration: BoxDecoration(
                     color: AppColors.white,
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.network(
-                          product.imgUrl,
-                          height: 100,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.network(
+                              product.imgUrl,
+                              height: 100,
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              product.name,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              '\$${product.price}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.primary,
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          product.name,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
+                      ),
+                      Positioned(
+                        top: 8,
+                        right: 8,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: AppColors.grey100,
+                            shape: BoxShape.circle,
+                          ),
+                          child: InkWell(
+                            onTap: () {},
+                            child: const Padding(
+                              padding: EdgeInsets.all(4.0),
+                              child: Icon(
+                                Icons.favorite_border,
+                                size: 15,
+                                color: AppColors.primary,
+                              ),
+                            ),
                           ),
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          '\$${product.price}',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.primary,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 );
               },
