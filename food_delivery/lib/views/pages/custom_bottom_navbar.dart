@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/utils/app_colors.dart';
+import 'package:food_delivery/views/pages/favorites_page.dart';
 import 'package:food_delivery/views/pages/home_page.dart';
 import 'package:food_delivery/views/widgets/app_drawer.dart';
 import 'package:food_delivery/views/widgets/custom_app_bar.dart';
@@ -16,7 +17,7 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
 
   List<Widget> bodyWidgets = [
     const HomePage(),
-    const SizedBox(),
+    const FavoritesPage(),
     const SizedBox(),
   ];
 
