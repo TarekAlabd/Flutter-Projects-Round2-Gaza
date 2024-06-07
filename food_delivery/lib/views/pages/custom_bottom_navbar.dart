@@ -24,7 +24,6 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.grey100,
       drawer: const AppDrawer(),
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(80),
@@ -35,7 +34,6 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: selectedIndex,
-        selectedItemColor: AppColors.primary,
         onTap: (index) {
           setState(() {
             selectedIndex = index;

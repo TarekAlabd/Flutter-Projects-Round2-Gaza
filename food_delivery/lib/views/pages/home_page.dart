@@ -113,7 +113,9 @@ class _HomePageState extends State<HomePage> {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(builder: (_) {
-                        return ProductDetailsPage(product: product,);
+                        return ProductDetailsPage(
+                          product: product,
+                        );
                       }),
                     );
                   },
@@ -137,18 +139,30 @@ class _HomePageState extends State<HomePage> {
                               const SizedBox(height: 4),
                               Text(
                                 product.name,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 16,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium!
+                                    .copyWith(
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                // style: const TextStyle(
+                                //   fontWeight: FontWeight.w600,
+                                //   fontSize: 16,
+                                // ),
                               ),
                               const SizedBox(height: 4),
                               Text(
                                 '\$${product.price}',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.primary,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall!
+                                    .copyWith(
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                // style: TextStyle(
+                                //   fontWeight: FontWeight.bold,
+                                //   color: Theme.of(context).primaryColor,
+                                // ),
                               ),
                             ],
                           ),
@@ -178,7 +192,7 @@ class _HomePageState extends State<HomePage> {
                                       ? Icons.favorite
                                       : Icons.favorite_border,
                                   size: 15,
-                                  color: AppColors.primary,
+                                  color: Theme.of(context).primaryColor,
                                 ),
                               ),
                             ),
