@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -7,10 +8,15 @@ import 'package:food_delivery/utils/app_colors.dart';
 import 'package:food_delivery/views/pages/product_details_page.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  HomePage({super.key}) {
+    print('HomePage Constructor');
+  }
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePage> createState() {
+    print('HomePage Create State');
+    return _HomePageState();
+  }
 }
 
 class _HomePageState extends State<HomePage> {
@@ -21,10 +27,12 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     filteredProducts = dummyProducts;
+    print('HomePage Init State');
   }
 
   @override
   Widget build(BuildContext context) {
+    print('HomePage Build');
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: SingleChildScrollView(
@@ -132,8 +140,8 @@ class _HomePageState extends State<HomePage> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Image.network(
-                                product.imgUrl,
+                              CachedNetworkImage(
+                                imageUrl: product.imgUrl,
                                 height: 100,
                               ),
                               const SizedBox(height: 4),

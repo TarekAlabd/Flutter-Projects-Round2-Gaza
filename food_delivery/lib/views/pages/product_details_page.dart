@@ -5,6 +5,7 @@ import 'package:food_delivery/models/product_model.dart';
 import 'package:food_delivery/utils/app_colors.dart';
 import 'package:food_delivery/views/widgets/counter_widget.dart';
 import 'package:food_delivery/views/widgets/property_item.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ProductDetailsPage extends StatelessWidget {
   final ProductModel product;
@@ -42,8 +43,8 @@ class ProductDetailsPage extends StatelessWidget {
                         ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 60.0),
-                          child: Image.network(
-                            product.imgUrl,
+                          child: CachedNetworkImage(
+                            imageUrl: product.imgUrl,
                           ),
                         ),
                       ),

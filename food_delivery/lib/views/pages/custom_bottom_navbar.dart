@@ -12,14 +12,40 @@ class CustomBottomNavbar extends StatefulWidget {
   State<CustomBottomNavbar> createState() => _CustomBottomNavbarState();
 }
 
-class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
+class _CustomBottomNavbarState extends State<CustomBottomNavbar> with WidgetsBindingObserver {
   int selectedIndex = 0;
 
   List<Widget> bodyWidgets = [
-    const HomePage(),
-    const FavoritesPage(),
+    HomePage(),
+    FavoritesPage(),
     const SizedBox(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      print('App Resumed');
+    } else if (state == AppLifecycleState.paused) {
+      print('App Paused');
+    } else if (state == AppLifecycleState.inactive) {
+      print('App Inactive');
+    } else if (state == AppLifecycleState.detached) {
+      print('App Detached');
+    }
+    super.didChangeAppLifecycleState(state);
+  }
 
   @override
   Widget build(BuildContext context) {
