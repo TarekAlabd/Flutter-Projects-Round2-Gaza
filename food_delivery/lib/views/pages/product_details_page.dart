@@ -8,14 +8,16 @@ import 'package:food_delivery/views/widgets/property_item.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class ProductDetailsPage extends StatelessWidget {
-  final ProductModel product;
   const ProductDetailsPage({
     super.key,
-    required this.product,
   });
+
+  static const String routeName = '/product-details';
 
   @override
   Widget build(BuildContext context) {
+    final product = ModalRoute.of(context)!.settings.arguments as ProductModel;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Product Details'),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery/utils/app_colors.dart';
 import 'package:food_delivery/views/pages/favorites_page.dart';
 import 'package:food_delivery/views/pages/home_page.dart';
+import 'package:food_delivery/views/pages/profile_page.dart';
 import 'package:food_delivery/views/widgets/app_drawer.dart';
 import 'package:food_delivery/views/widgets/custom_app_bar.dart';
 
@@ -12,13 +13,14 @@ class CustomBottomNavbar extends StatefulWidget {
   State<CustomBottomNavbar> createState() => _CustomBottomNavbarState();
 }
 
-class _CustomBottomNavbarState extends State<CustomBottomNavbar> with WidgetsBindingObserver {
+class _CustomBottomNavbarState extends State<CustomBottomNavbar>
+    with WidgetsBindingObserver {
   int selectedIndex = 0;
 
   List<Widget> bodyWidgets = [
     HomePage(),
-    FavoritesPage(),
-    const SizedBox(),
+    const FavoritesPage(),
+    const ProfilePage(),
   ];
 
   @override
