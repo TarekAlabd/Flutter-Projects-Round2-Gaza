@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce/utils/app_colors.dart';
 import 'package:ecommerce/views/pages/cart_page.dart';
 import 'package:ecommerce/views/pages/favorite_page.dart';
@@ -14,13 +15,38 @@ class CustomBottomNavbar extends StatefulWidget {
 }
 
 class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
+  int _currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bottom Navbar'),
+        leading: const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: CircleAvatar(
+            backgroundImage: CachedNetworkImageProvider(
+              'https://yt3.googleusercontent.com/ytc/AIdro_nGmcgNuWCHFJ2SnkZCNWUwRaqc_iuEKMOtvtO49AA_iuc=s900-c-k-c0x00ffffff-no-rj',
+            ),
+          ),
+        ),
+        centerTitle: false,
+        title: _buildTitle(),
+        actions: [
+          if (_currentIndex == 0)
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.search),
+            ),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.notifications),
+          ),
+        ],
       ),
       body: PersistentTabView(
+        onTabChanged: (value) => setState(() {
+          _currentIndex = value;
+        }),
         tabs: [
           PersistentTabConfig(
             screen: const HomePage(),
@@ -64,5 +90,37 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
         ),
       ),
     );
+  }
+
+  Widget _buildTitle() {
+    switch (_currentIndex) {
+      case 0:
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Hi, Tarek',
+              style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+            Text(
+              'Let\'s go shopping!',
+              style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                    color: AppColors.grey,
+                    fontWeight: FontWeight.normal,
+                  ),
+            ),
+          ],
+        );
+      case 1:
+        return const Text('Cart');
+      case 2:
+        return const Text('Favorite');
+      case 3:
+        return const Text('Profile');
+      default:
+        return const Text('Home');
+    }
   }
 }
