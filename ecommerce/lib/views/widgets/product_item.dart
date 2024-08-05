@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce/models/product_item_model.dart';
 import 'package:ecommerce/utils/app_colors.dart';
+import 'package:ecommerce/view_models/home_tab_cubit/home_tab_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductItem extends StatefulWidget {
   final ProductItemModel productItem;
@@ -14,6 +16,8 @@ class ProductItem extends StatefulWidget {
 class _ProductItemState extends State<ProductItem> {
   @override
   Widget build(BuildContext context) {
+    final homeTabCubit = BlocProvider.of<HomeTabCubit>(context);
+
     return Column(
       children: [
         Stack(
@@ -49,23 +53,33 @@ class _ProductItemState extends State<ProductItem> {
                   color: Colors.white54,
                 ),
                 child: InkWell(
-                  onTap: () {
-                    setState(() {
-                      if (dummyFavorites.contains(widget.productItem)) {
-                        dummyFavorites.remove(widget.productItem);
-                      } else {
-                        dummyFavorites.add(widget.productItem);
-                      }
-                    });
-                  },
+                  onTap: () => homeTabCubit.toggleFavorite(widget.productItem),
                   child: Padding(
                     padding: const EdgeInsets.all(4.0),
-                    child: Icon(
-                      dummyFavorites.contains(widget.productItem)
-                          ? Icons.favorite
-                          : Icons.favorite_border,
-                      size: 20,
-                      color: Theme.of(context).primaryColor,
+                    child: BlocBuilder<HomeTabCubit, HomeTabState>(
+                      bloc: homeTabCubit,
+                      buildWhen: (previous, current) =>
+                          (current is SetFavoriteLoading && current.favoritedId == widget.productItem.id) ||
+                          (current is SetFavoriteSuccess && current.favoritedId == widget.productItem.id) ||
+                          current is SetFavoriteError,
+                      builder: (context, state) {
+                        if (state is SetFavoriteLoading) {
+                          return const CircularProgressIndicator.adaptive();
+                        } else if (state is SetFavoriteSuccess) {
+                          return Icon(
+                            state.isFavorite
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            size: 20,
+                            color: Theme.of(context).primaryColor,
+                          );
+                        }
+                        return Icon(
+                          Icons.favorite_border,
+                          size: 20,
+                          color: Theme.of(context).primaryColor,
+                        );
+                      },
                     ),
                   ),
                 ),
