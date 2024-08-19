@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce/utils/app_colors.dart';
+import 'package:ecommerce/view_models/cart_cubit/cart_cubit.dart';
 import 'package:ecommerce/views/pages/cart_page.dart';
 import 'package:ecommerce/views/pages/favorite_page.dart';
 import 'package:ecommerce/views/pages/home_page.dart';
 import 'package:ecommerce/views/pages/profile_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class CustomBottomNavbar extends StatefulWidget {
@@ -58,7 +60,14 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
             ),
           ),
           PersistentTabConfig(
-            screen: const CartPage(),
+            screen: BlocProvider(
+              create: (context) {
+                final cubit = CartCubit();
+                cubit.getCartItems();
+                return cubit;
+              },
+              child: const CartPage(),
+            ),
             item: ItemConfig(
               icon: const Icon(Icons.shopping_cart),
               title: "Cart",

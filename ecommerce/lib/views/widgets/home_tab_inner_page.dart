@@ -1,6 +1,9 @@
 import 'package:ecommerce/view_models/home_tab_cubit/home_tab_cubit.dart';
+import 'package:ecommerce/view_models/product_details_cubit/product_details_cubit.dart';
+import 'package:ecommerce/views/pages/product_details_page.dart';
 import 'package:ecommerce/views/widgets/home_carousel_slider.dart';
 import 'package:ecommerce/views/widgets/product_item.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -65,7 +68,20 @@ class HomeTabInnerPage extends StatelessWidget {
                     ),
                     itemBuilder: (context, index) {
                       return InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context, rootNavigator: true).push(
+                            CupertinoPageRoute(
+                              builder: (context) => BlocProvider(
+                                create: (context) {
+                                  final cubit = ProductDetailsCubit();
+                                  cubit.getProductDetails(products[index].id);
+                                  return cubit;
+                                },
+                                child: const ProductDetailsPage(),
+                              ),
+                            ),
+                          );
+                        },
                         child: ProductItem(
                           productItem: products[index],
                         ),
