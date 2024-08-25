@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "658246692010",
+    "project_id": "round2-ecommerce",
+    "storage_bucket": "round2-ecommerce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:658246692010:android:cd49eb6ad7e55cf33eb4d3",
+        "android_client_info": {
+          "package_name": "dev.tarekalabd.ecommerce"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqdgkrzMDCPbGLZcPzp4L80yTldqpv4Fk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

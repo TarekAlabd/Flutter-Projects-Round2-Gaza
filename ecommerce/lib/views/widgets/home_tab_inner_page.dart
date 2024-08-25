@@ -1,3 +1,4 @@
+import 'package:ecommerce/utils/app_routes.dart';
 import 'package:ecommerce/view_models/home_tab_cubit/home_tab_cubit.dart';
 import 'package:ecommerce/view_models/product_details_cubit/product_details_cubit.dart';
 import 'package:ecommerce/views/pages/product_details_page.dart';
@@ -69,17 +70,9 @@ class HomeTabInnerPage extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: () {
-                          Navigator.of(context, rootNavigator: true).push(
-                            CupertinoPageRoute(
-                              builder: (context) => BlocProvider(
-                                create: (context) {
-                                  final cubit = ProductDetailsCubit();
-                                  cubit.getProductDetails(products[index].id);
-                                  return cubit;
-                                },
-                                child: const ProductDetailsPage(),
-                              ),
-                            ),
+                          Navigator.of(context, rootNavigator: true).pushNamed(
+                            AppRoutes.productDetails,
+                            arguments: products[index].id,
                           );
                         },
                         child: ProductItem(

@@ -1,10 +1,21 @@
+import 'package:ecommerce/firebase_options.dart';
 import 'package:ecommerce/utils/app_constants.dart';
+import 'package:ecommerce/utils/app_router.dart';
+import 'package:ecommerce/utils/app_routes.dart';
 import 'package:ecommerce/utils/app_theme.dart';
-import 'package:ecommerce/views/widgets/custom_bottom_navbar.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+Future<void> main() async {
+  await initializeApp();
   runApp(const MyApp());
+}
+
+Future<void> initializeApp() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -16,7 +27,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: AppConstants.appName,
       theme: AppTheme.lightTheme(),
-      home: const CustomBottomNavbar(),
+      initialRoute: AppRoutes.home,
+      onGenerateRoute: AppRouter.onGenerateRoute,
     );
   }
 }
