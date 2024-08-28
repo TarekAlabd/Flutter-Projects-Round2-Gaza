@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: AppConstants.appName,
       theme: AppTheme.lightTheme(),
-      initialRoute: AppRoutes.home,
+      initialRoute: AppRoutes.signIn,
       onGenerateRoute: AppRouter.onGenerateRoute,
     );
   }
