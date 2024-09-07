@@ -19,9 +19,9 @@ final class HomeLoaded extends HomeTabState {
 final class HomeError extends HomeTabState {
   final String message;
 
-  HomeError({
-    required this.message,
-  });
+  HomeError(
+    this.message,
+  );
 }
 
 final class SetFavoriteLoading extends HomeTabState {

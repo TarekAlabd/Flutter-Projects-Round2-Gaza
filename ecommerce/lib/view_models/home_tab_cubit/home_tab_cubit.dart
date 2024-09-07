@@ -1,10 +1,13 @@
 import 'package:ecommerce/models/product_item_model.dart';
+import 'package:ecommerce/services/home_services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'home_tab_state.dart';
 
 class HomeTabCubit extends Cubit<HomeTabState> {
   HomeTabCubit() : super(HomeInitial());
+
+  final homeServices = HomeServices();
 
   final List<String> imgList = [
     'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
@@ -15,14 +18,19 @@ class HomeTabCubit extends Cubit<HomeTabState> {
     'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
   ];
 
-  void getHomeData() {
+  Future<void> getHomeData() async {
     emit(HomeLoading());
-    Future.delayed(const Duration(seconds: 1), () {
-      final products = dummyProducts;
+    try {
+      final products = await homeServices.getProducts();
       emit(
-        HomeLoaded(announcementsImages: imgList, products: products),
+        HomeLoaded(
+          announcementsImages: imgList,
+          products: products,
+        ),
       );
-    });
+    } catch (e) {
+      emit(HomeError(e.toString()));
+    }
   }
 
   void toggleFavorite(ProductItemModel productItem) {
@@ -32,10 +40,12 @@ class HomeTabCubit extends Cubit<HomeTabState> {
       () {
         if (dummyFavorites.contains(productItem)) {
           dummyFavorites.remove(productItem);
-          emit(SetFavoriteSuccess(favoritedId: productItem.id, isFavorite: false));
+          emit(SetFavoriteSuccess(
+              favoritedId: productItem.id, isFavorite: false));
         } else {
           dummyFavorites.add(productItem);
-          emit(SetFavoriteSuccess(favoritedId: productItem.id, isFavorite: true));
+          emit(SetFavoriteSuccess(
+              favoritedId: productItem.id, isFavorite: true));
         }
       },
     );

@@ -29,10 +29,7 @@ class AppRouter {
       case AppRoutes.signIn:
       default:
         return CupertinoPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => AuthCubit(),
-            child: const SignInPage(),
-          ),
+          builder: (_) => const SignInPage(),
         );
     }
   }

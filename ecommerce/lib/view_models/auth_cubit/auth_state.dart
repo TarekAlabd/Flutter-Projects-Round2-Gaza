@@ -13,3 +13,7 @@ final class AuthFailed extends AuthState {
 
   AuthFailed(this.message);
 }
+
+final class SigningOut extends AuthState {}
+
+final class SignedOut extends AuthState {}

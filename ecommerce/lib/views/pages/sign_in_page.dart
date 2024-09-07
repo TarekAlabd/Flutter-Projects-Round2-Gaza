@@ -83,6 +83,7 @@ class _SignInPageState extends State<SignInPage> {
                 const SizedBox(height: 12),
                 TextFormField(
                   controller: passwordController,
+                  obscureText: isSecured,
                   validator: (value) =>
                       value!.isNotEmpty ? null : 'Password is required',
                   decoration: InputDecoration(
