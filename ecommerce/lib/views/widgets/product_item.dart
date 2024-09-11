@@ -75,7 +75,7 @@ class _ProductItemState extends State<ProductItem> {
                           );
                         }
                         return Icon(
-                          Icons.favorite_border,
+                          widget.productItem.isFavorite ? Icons.favorite : Icons.favorite_border,
                           size: 20,
                           color: Theme.of(context).primaryColor,
                         );

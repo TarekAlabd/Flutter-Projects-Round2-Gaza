@@ -1,14 +1,20 @@
 import 'package:ecommerce/models/cart_orders_model.dart';
+import 'package:ecommerce/services/auth_services.dart';
+import 'package:ecommerce/services/cart_services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 part 'cart_state.dart';
 
 class CartCubit extends Cubit<CartState> {
   CartCubit() : super(CartInitial());
 
-  void getCartItems() {
+  final authServices = AuthServices();
+  final cartServices = CartServices();
+
+  Future<void> getCartItems() async {
     emit(CartLoading());
     try {
-      final cartOrders = dummyCartOrders;
+      final currentUser = authServices.currentUser;
+      final cartOrders = await cartServices.getCartItems(currentUser!.uid);
       final subtotal = cartOrders.fold<double>(
         0,
         (previousValue, element) =>

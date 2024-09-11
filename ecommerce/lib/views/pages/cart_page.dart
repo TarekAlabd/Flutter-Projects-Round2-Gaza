@@ -30,6 +30,12 @@ class CartPage extends StatelessWidget {
           final shipping = state.shipping;
           final totalPrice = state.totalPrice;
 
+          if (cartItems.isEmpty) {
+            return const Center(
+              child: Text('Your cart is empty'),
+            );
+          }
+
           return RefreshIndicator(
             onRefresh: () async {
               cartCubit.getCartItems();

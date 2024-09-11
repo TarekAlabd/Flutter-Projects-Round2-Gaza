@@ -87,8 +87,8 @@ class HomeTabInnerPage extends StatelessWidget {
             ),
           );
         } else if (state is HomeError) {
-          return const Center(
-            child: Text('Error'),
+          return Center(
+            child: Text(state.message),
           );
         } else {
           return const SizedBox();

@@ -28,6 +28,7 @@ class ProductItemModel {
   final double price;
   final String category;
   final double averageRate;
+  final bool isFavorite;
 
   ProductItemModel({
     required this.id,
@@ -37,6 +38,7 @@ class ProductItemModel {
         'Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
     required this.price,
     required this.category,
+    this.isFavorite = false,
     this.averageRate = 4.5,
   });
 
@@ -50,6 +52,7 @@ class ProductItemModel {
     double? averageRate,
     int? quantity,
     ProductSize? size,
+    bool? isFavorite,
   }) {
     return ProductItemModel(
       id: id ?? this.id,
@@ -59,6 +62,7 @@ class ProductItemModel {
       price: price ?? this.price,
       category: category ?? this.category,
       averageRate: averageRate ?? this.averageRate,
+      isFavorite: isFavorite ?? this.isFavorite,
     );
   }
 

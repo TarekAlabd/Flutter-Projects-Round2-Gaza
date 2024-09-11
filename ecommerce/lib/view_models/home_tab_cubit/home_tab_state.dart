@@ -40,7 +40,7 @@ final class SetFavoriteSuccess extends HomeTabState {
 final class SetFavoriteError extends HomeTabState {
   final String message;
 
-  SetFavoriteError({
-    required this.message,
-  });
+  SetFavoriteError(
+    this.message,
+  );
 }

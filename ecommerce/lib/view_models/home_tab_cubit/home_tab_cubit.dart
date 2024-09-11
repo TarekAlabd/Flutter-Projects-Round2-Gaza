@@ -1,4 +1,6 @@
 import 'package:ecommerce/models/product_item_model.dart';
+import 'package:ecommerce/services/auth_services.dart';
+import 'package:ecommerce/services/favorite_services.dart';
 import 'package:ecommerce/services/home_services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,6 +10,8 @@ class HomeTabCubit extends Cubit<HomeTabState> {
   HomeTabCubit() : super(HomeInitial());
 
   final homeServices = HomeServices();
+  final favoriteServices = FavoriteServices();
+  final authServices = AuthServices();
 
   final List<String> imgList = [
     'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
@@ -22,6 +26,19 @@ class HomeTabCubit extends Cubit<HomeTabState> {
     emit(HomeLoading());
     try {
       final products = await homeServices.getProducts();
+      final currentUser = authServices.currentUser;
+      final favProducts = await favoriteServices.getFavoriteItems(currentUser!.uid);
+
+      for (var product in products) {
+        if (favProducts.any((element) => element.id == product.id)){
+          final index = products.indexOf(product);
+          product = product.copyWith(isFavorite: true);
+          products[index] = product;
+        } else {
+          product = product.copyWith(isFavorite: false);
+        }
+      }
+
       emit(
         HomeLoaded(
           announcementsImages: imgList,
@@ -33,21 +50,23 @@ class HomeTabCubit extends Cubit<HomeTabState> {
     }
   }
 
-  void toggleFavorite(ProductItemModel productItem) {
+  Future<void> toggleFavorite(ProductItemModel productItem) async {
     emit(SetFavoriteLoading(productItem.id));
-    Future.delayed(
-      const Duration(milliseconds: 500),
-      () {
-        if (dummyFavorites.contains(productItem)) {
-          dummyFavorites.remove(productItem);
-          emit(SetFavoriteSuccess(
-              favoritedId: productItem.id, isFavorite: false));
-        } else {
-          dummyFavorites.add(productItem);
-          emit(SetFavoriteSuccess(
-              favoritedId: productItem.id, isFavorite: true));
-        }
-      },
-    );
+    try {
+      final currentUser = authServices.currentUser;
+      final favProducts = await favoriteServices.getFavoriteItems(currentUser!.uid);
+
+      if (favProducts.any((element) => element.id == productItem.id)){
+        await favoriteServices.removeFavorite(currentUser.uid, productItem.id);
+        emit(SetFavoriteSuccess(
+          favoritedId: productItem.id, isFavorite: false));
+      } else {
+        await favoriteServices.addFavorite(currentUser.uid, productItem);
+        emit(SetFavoriteSuccess(
+          favoritedId: productItem.id, isFavorite: true));
+      }
+    } catch (e) {
+      emit(SetFavoriteError(e.toString()));
+    }
   }
 }
