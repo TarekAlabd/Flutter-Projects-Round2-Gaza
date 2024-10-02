@@ -1,4 +1,5 @@
 import 'package:ecommerce/utils/app_routes.dart';
+import 'package:ecommerce/view_models/address_cubit/address_cubit.dart';
 import 'package:ecommerce/view_models/auth_cubit/auth_cubit.dart';
 import 'package:ecommerce/view_models/checkout_cubit/checkout_cubit.dart';
 import 'package:ecommerce/view_models/product_details_cubit/product_details_cubit.dart';
@@ -36,7 +37,14 @@ class AppRouter {
         );
       case AppRoutes.address:
         return CupertinoPageRoute(
-          builder: (_) => const AddressPage(),
+          builder: (_) => BlocProvider(
+            create: (context) {
+              final cubit = AddressCubit();
+              cubit.fetchAddresses();
+              return cubit;
+            },
+            child: const AddressPage(),
+          ),
         );
       case AppRoutes.checkout:
         return CupertinoPageRoute(

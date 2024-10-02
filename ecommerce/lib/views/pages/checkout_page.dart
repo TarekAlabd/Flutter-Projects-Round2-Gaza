@@ -55,7 +55,11 @@ class CheckoutPage extends StatelessWidget {
                       onTap: shippingAddress == null
                           ? null
                           : () => Navigator.of(context)
-                              .pushNamed(AppRoutes.address),
+                              .pushNamed(AppRoutes.address)
+                              .then(
+                                (value) async =>
+                                    await checkoutCubit.getCheckoutData(),
+                              ),
                     ),
                     if (shippingAddress == null) const SizedBox(height: 16),
                     AddressComponentCheckout(
