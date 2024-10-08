@@ -9,6 +9,7 @@ environment:
   sdk: ">=3.4.4 <4.0.0"
 
 dependencies:
+  cached_network_image: ^3.4.1
   carousel_slider: ^5.0.0
   cupertino_icons: ^1.0.6
   dio: ^5.7.0
