@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "242566260730",
+    "project_id": "chat-app-ca671",
+    "storage_bucket": "chat-app-ca671.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:242566260730:android:e6a6a5ea53abb3125b6643",
+        "android_client_info": {
+          "package_name": "dev.tarek.chatapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANqkVCR1iFTIm7Yo1koZ1WGJ47PChk1_U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
