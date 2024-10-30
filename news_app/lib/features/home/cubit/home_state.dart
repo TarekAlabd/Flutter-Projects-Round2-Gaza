@@ -31,3 +31,25 @@ final class HomeListError extends HomeState {
 
   HomeListError(this.message);
 }
+
+final class HomeFavoriteLoading extends HomeState {
+  final String title;
+
+  HomeFavoriteLoading(this.title);
+}
+
+final class HomeFavoriteLoaded extends HomeState {
+  final String title;
+  final bool isFavorite;
+
+  HomeFavoriteLoaded(
+    this.title,
+    this.isFavorite,
+  );
+}
+
+final class HomeFavoriteError extends HomeState {
+  final String message;
+
+  HomeFavoriteError(this.message);
+}

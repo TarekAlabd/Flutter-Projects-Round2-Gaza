@@ -77,7 +77,7 @@ class HomePage extends StatelessWidget {
                   if (state is HomeListLoaded) {
                     final topHeadlines = state.topHeadlines;
 
-                    return HomeListNews(topHeadlines: topHeadlines);
+                    return HomeListNews(articles: topHeadlines);
                   } else if (state is HomeListLoading) {
                     return const Center(
                       child: CircularProgressIndicator.adaptive(),

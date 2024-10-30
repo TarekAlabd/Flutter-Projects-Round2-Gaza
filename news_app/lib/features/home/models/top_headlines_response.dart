@@ -38,6 +38,7 @@ class Article {
   final String? urlToImage;
   final String? publishedAt;
   final String? content;
+  final bool isFavorite;
 
   const Article({
     this.source,
@@ -48,36 +49,37 @@ class Article {
     this.urlToImage,
     this.publishedAt,
     this.content,
+    this.isFavorite = false,
   });
 
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
-  
-    if(source != null){
+
+    if (source != null) {
       result.addAll({'source': source!.toMap()});
     }
-    if(title != null){
+    if (title != null) {
       result.addAll({'title': title});
     }
-    if(author != null){
+    if (author != null) {
       result.addAll({'author': author});
     }
-    if(description != null){
+    if (description != null) {
       result.addAll({'description': description});
     }
-    if(url != null){
+    if (url != null) {
       result.addAll({'url': url});
     }
-    if(urlToImage != null){
+    if (urlToImage != null) {
       result.addAll({'urlToImage': urlToImage});
     }
-    if(publishedAt != null){
+    if (publishedAt != null) {
       result.addAll({'publishedAt': publishedAt});
     }
-    if(content != null){
+    if (content != null) {
       result.addAll({'content': content});
     }
-  
+
     return result;
   }
 
@@ -93,6 +95,30 @@ class Article {
       content: map['content'],
     );
   }
+
+  Article copyWith({
+    Source? source,
+    String? title,
+    String? author,
+    String? description,
+    String? url,
+    String? urlToImage,
+    String? publishedAt,
+    String? content,
+    bool? isFavorite,
+  }) {
+    return Article(
+      source: source ?? this.source,
+      title: title ?? this.title,
+      author: author ?? this.author,
+      description: description ?? this.description,
+      url: url ?? this.url,
+      urlToImage: urlToImage ?? this.urlToImage,
+      publishedAt: publishedAt ?? this.publishedAt,
+      content: content ?? this.content,
+      isFavorite: isFavorite ?? this.isFavorite,
+    );
+  }
 }
 
 class Source {
@@ -106,14 +132,14 @@ class Source {
 
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
-  
-    if(id != null){
+
+    if (id != null) {
       result.addAll({'id': id});
     }
-    if(name != null){
+    if (name != null) {
       result.addAll({'name': name});
     }
-  
+
     return result;
   }
 
