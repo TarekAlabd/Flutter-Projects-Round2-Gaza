@@ -1,20 +1,22 @@
 import 'package:chat_app/core/route/app_routes.dart';
+import 'package:chat_app/core/utils/enums.dart';
 import 'package:chat_app/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class AuthPage extends StatefulWidget {
+  const AuthPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<AuthPage> createState() => _AuthPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _AuthPageState extends State<AuthPage> {
   late final GlobalKey<FormState> _formKey;
   late final TextEditingController _emailController, _passwordController;
   late FocusNode _emailFocusNode, _passwordFocusNode;
   bool visibility = false;
+  var authType = AuthType.login;
 
   @override
   void initState() {
@@ -33,9 +35,9 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void login(VoidCallback loginFunc) {
+  void loginOrRegister(VoidCallback func) {
     if (_formKey.currentState!.validate()) {
-      loginFunc();
+      func();
     }
   }
 
@@ -55,7 +57,9 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   const SizedBox(height: 24),
                   Text(
-                    'Login Account!',
+                    authType == AuthType.login
+                        ? 'Login Account!'
+                        : 'Register Account!',
                     style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                           color: Theme.of(context).primaryColor,
                           fontWeight: FontWeight.bold,
@@ -63,7 +67,9 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: 8.0),
                   Text(
-                    'Please, login with registered account!',
+                    authType == AuthType.login
+                        ? 'Please, login with registered account!'
+                        : 'Please, register with your email!',
                     style: Theme.of(context).textTheme.titleMedium!.copyWith(
                           color: Colors.grey,
                         ),
@@ -115,8 +121,17 @@ class _LoginPageState extends State<LoginPage> {
                     textInputAction: TextInputAction.done,
                     onEditingComplete: () {
                       _passwordFocusNode.unfocus();
-                      login(() => cubit.login(
-                          _emailController.text, _passwordController.text));
+                      loginOrRegister(
+                        () => authType == AuthType.login
+                            ? cubit.login(
+                                _emailController.text,
+                                _passwordController.text,
+                              )
+                            : cubit.register(
+                                _emailController.text,
+                                _passwordController.text,
+                              ),
+                      );
                     },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -144,20 +159,22 @@ class _LoginPageState extends State<LoginPage> {
                       suffixIconColor: Colors.grey,
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        'Forgot Password?',
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium!
-                            .copyWith(color: Theme.of(context).primaryColor),
+                  if (authType == AuthType.login) ...[
+                    const SizedBox(height: 8),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          'Forgot Password?',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium!
+                              .copyWith(color: Theme.of(context).primaryColor),
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                   const SizedBox(height: 24),
                   SizedBox(
                     width: double.infinity,
@@ -169,8 +186,10 @@ class _LoginPageState extends State<LoginPage> {
                       listener: (context, state) {
                         if (state is AuthSuccess) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Login Success!'),
+                            SnackBar(
+                              content: Text(authType == AuthType.login
+                                  ? 'Login Success!'
+                                  : 'Register Success!'),
                             ),
                           );
                           Navigator.of(context).pushNamed(AppRoutes.chat);
@@ -200,14 +219,23 @@ class _LoginPageState extends State<LoginPage> {
                           );
                         }
                         return ElevatedButton(
-                          onPressed: () => login(() => cubit.login(
-                              _emailController.text, _passwordController.text)),
+                          onPressed: () => loginOrRegister(
+                            () => authType == AuthType.login
+                                ? cubit.login(
+                                    _emailController.text,
+                                    _passwordController.text,
+                                  )
+                                : cubit.register(
+                                    _emailController.text,
+                                    _passwordController.text,
+                                  ),
+                          ),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Theme.of(context).primaryColor,
                             foregroundColor: Colors.white,
                           ),
                           child: Text(
-                            'Login',
+                            authType == AuthType.login ? 'Login' : 'Register',
                             style: Theme.of(context)
                                 .textTheme
                                 .headlineSmall!
@@ -230,21 +258,32 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 16.0),
-                  const SizedBox(height: 16.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Don\'t have an account?',
+                        authType == AuthType.login
+                            ? 'Don\'t have an account?'
+                            : 'Already have an account?',
                         style:
                             Theme.of(context).textTheme.titleMedium!.copyWith(
                                   color: Colors.grey,
                                 ),
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          setState(() {
+                            if (authType == AuthType.login) {
+                              authType = AuthType.register;
+                            } else {
+                              authType = AuthType.login;
+                            }
+                            _emailController.clear();
+                            _passwordController.clear();
+                          });
+                        },
                         child: Text(
-                          'Register',
+                          authType == AuthType.login ? 'Register' : 'Login',
                           style: Theme.of(context)
                               .textTheme
                               .titleMedium!

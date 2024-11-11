@@ -1,3 +1,4 @@
+import 'package:chat_app/core/models/user_data.dart';
 import 'package:chat_app/features/auth/services/auth_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +15,7 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       final result = await _authServices.login(email, password);
       if (result) {
-        final user = _authServices.getUser();
+        final user = _authServices.getUserInit();
         emit(AuthSuccess(user!));
       } else {
         emit(AuthError('Login failed'));
@@ -29,7 +30,7 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       final result = await _authServices.register(email, password);
       if (result) {
-        final user = _authServices.getUser();
+        final user = _authServices.getUserInit();
         emit(AuthSuccess(user!));
       } else {
         emit(AuthError('Login failed'));
@@ -51,7 +52,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> getUser() async {
     try {
-      User? userData = _authServices.getUser();
+      User? userData = _authServices.getUserInit();
       if (userData != null) {
         emit(AuthSuccess(userData));
       } else {

@@ -8,7 +8,8 @@ abstract class AuthServices {
   Future<bool> register(String email, String password);
   Future<void> logout();
   Future<bool> isLoggedIn();
-  User? getUser();
+  User? getUserInit();
+  Future<UserData> getUserData();
 }
 
 class AuthServicesImpl implements AuthServices {
@@ -62,7 +63,20 @@ class AuthServicesImpl implements AuthServices {
   }
 
   @override
-  User? getUser() {
+  User? getUserInit() {
     return _firebaseAuth.currentUser;
+  }
+
+  @override
+  Future<UserData> getUserData() async {
+    try {
+      final currentUser = getUserInit();
+      return await firestore.getDocument(
+        path: ApiPaths.user(currentUser?.uid ?? ''),
+        builder: (data, documentId) => UserData.fromMap(data),
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 }
